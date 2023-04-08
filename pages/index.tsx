@@ -1,15 +1,26 @@
 import type { NextPage } from "next";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { ImGoogle } from "react-icons/im";
 import { auth } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { RootContext } from "../context/RootContext";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const { setUserData } = useContext(RootContext);
+  const router = useRouter();
+
   async function onGoogleLogin() {
     try {
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
       console.log(res);
+      setUserData({
+        username: res.user.displayName,
+        email: res.user.email,
+        profileImageUrl: res.user.photoURL,
+      });
+      router.push("/app");
     } catch (error: any) {
       alert(error.message);
     }
