@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Fragment>
-      <ToastContainer />
+      <ToastContainer hideProgressBar position="bottom-left"/>
       <RootContext.Provider
         value={{
           userData,
