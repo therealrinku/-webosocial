@@ -66,6 +66,7 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
         username: userData?.username,
         profileImageUrl: userData?.profileImageUrl,
         postType,
+        email: userData?.email,
         text: postType === "text" ? text : null,
         videoUrl: postType === "video" ? fileUrl : null,
         imageUrl: postType === "image" ? fileUrl : null,
@@ -145,8 +146,7 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
           {uploading && <p>Uploading: {progress} %</p>}
 
           <button
-            disabled={uploading || postType ==="text" ? !text.trim() : !fileUrl }
-            onSubmit={onPost}
+            disabled={uploading || postType === "text" ? !text.trim() : !fileUrl}
             className="disabled:bg-blue-400 bg-blue-500 text-white py-2 rounded-md w-full mt-20"
           >
             Post
