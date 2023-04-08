@@ -1,6 +1,6 @@
 import { Fragment } from "react";
-import { PostModel } from "../pages/app";
 import Post from "./Post";
+import { PostModel } from "../types";
 
 interface Props {
   posts: PostModel[];

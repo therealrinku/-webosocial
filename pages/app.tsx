@@ -7,22 +7,7 @@ import { db } from "../firebase";
 import { ref, onValue } from "firebase/database";
 import { FiEdit } from "react-icons/fi";
 import UpdateProfileModal from "../components/UpdateProfileModal";
-export interface PostModel {
-  id: number;
-  imageUrl?: string;
-  postType: string;
-  timestamp: string;
-  text?: string;
-  videoUrl?: string;
-  username: string;
-  profileImageUrl: string;
-  likedBy?: string[];
-  comments?: (null | {
-    username: string;
-    profileImage: string;
-    comment: string;
-  })[];
-}
+import { PostModel } from "../types";
 
 export default function App() {
   const router = useRouter();

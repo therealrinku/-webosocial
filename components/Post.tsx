@@ -1,11 +1,11 @@
 import { FiThumbsUp } from "react-icons/fi";
-import { PostModel } from "../pages/app";
 import { BiCommentDetail } from "react-icons/bi";
 import { ref as dbRef, onValue, update } from "firebase/database";
 import { db } from "../firebase";
 import { useContext, useState } from "react";
 import { RootContext } from "../context/RootContext";
 import { toast } from "react-toastify";
+import { PostModel } from "../types";
 
 interface Props {
   post: PostModel;
