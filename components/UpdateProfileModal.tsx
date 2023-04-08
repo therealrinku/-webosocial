@@ -61,12 +61,12 @@ export default function UpdateProfileModal({ onClose }: Props) {
     e.preventDefault();
 
     try {
-      set(dbRef(db, "users/" + userData?.email?.slice(0,userData?.email?.indexOf("@"))), {
+      set(dbRef(db, "users/" + userData?.email?.slice(0, userData?.email?.indexOf("@"))), {
         username: username,
         profileImageUrl: fileUrl,
       });
 
-      setUserData({...userData, username:username, profileImageUrl:fileUrl })
+      setUserData({ ...userData, username: username, profileImageUrl: fileUrl });
 
       toast.success("Successfully updated the profile.");
       onClose();
@@ -89,7 +89,21 @@ export default function UpdateProfileModal({ onClose }: Props) {
 
         <form className="mt-10 px-3" onSubmit={onPost}>
           <section className="flex flex-col gap-2">
-            <label htmlFor="username" className="text-sm">Username</label>
+            <label htmlFor="email" className="text-sm">
+              Email
+            </label>
+            <input
+              id="email"
+              className="border p-2 rounded-md outline-none focus:border-blue-500 text-gray-500 mb-6"
+              type="text"
+              value={userData?.email}
+              disabled
+            />
+          </section>
+          <section className="flex flex-col gap-2">
+            <label htmlFor="username" className="text-sm">
+              Username
+            </label>
             <input
               id="username"
               className="border p-2 rounded-md outline-none focus:border-blue-500"
@@ -99,9 +113,11 @@ export default function UpdateProfileModal({ onClose }: Props) {
             />
           </section>
 
-          <img src={userData?.profileImageUrl} alt="profile image" className="mt-5 mb-10 h-32"/>
+          <img src={userData?.profileImageUrl} alt="profile image" className="mt-5 mb-10 h-32" />
 
-          <label htmlFor="username" className="text-sm">Update Profile Picture</label>
+          <label htmlFor="username" className="text-sm">
+            Update Profile Picture
+          </label>
           <input accept=".jpeg,.jpg,.png" type="file" className="mt-2" onChange={onFileUpload} />
 
           {uploading && <p>Uploading: {progress} %</p>}
