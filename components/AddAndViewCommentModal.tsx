@@ -1,5 +1,5 @@
 import { FormEvent, Fragment, useContext, useState } from "react";
-import { FiX } from "react-icons/fi";
+import { FiTrash, FiX } from "react-icons/fi";
 import { db } from "../firebase";
 import { toast } from "react-toastify";
 import { RootContext } from "../context/RootContext";
@@ -47,6 +47,30 @@ export default function AddAndViewCommentModal({ onClose, postId, comments }: Pr
     }
   }
 
+  function onDeleteComment(id: number) {
+    const confirmed = confirm("Are you sure ?");
+
+    if (!confirmed) return;
+
+    try {
+      const dataRef = dbRef(db, `posts/${postId}`);
+
+      let lastValue: Array<{ id: number }> = [];
+      onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        lastValue = data?.comments || [];
+      });
+
+      update(dbRef(db, "posts/" + postId), {
+        comments: lastValue.filter((item) => item.id !== id),
+      });
+
+      toast.success("Successfully deleted the comment");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }
+
   return (
     <Fragment>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity"></div>
@@ -88,9 +112,20 @@ export default function AddAndViewCommentModal({ onClose, postId, comments }: Pr
                     </section>
 
                     <p className="mx-2 mt-3">{comment.comment}</p>
-                    <p className="mx-2 mt-3 text-gray-500 text-xs">
-                      {comment.timestamp?.slice(0, comment.timestamp?.indexOf("GMT"))}
-                    </p>
+
+                    <section className="flex items-center text-xs">
+                      <p className="text-gray-500 mx-2 my-3">
+                        {comment.timestamp?.slice(0, comment.timestamp?.indexOf("GMT"))}
+                      </p>
+                      {comment.email === userData?.email && (
+                        <button
+                          onClick={() => onDeleteComment(comment.id)}
+                          className=" mb-1 text-red-500 hover:text-red-600"
+                        >
+                          <FiTrash size={14} />
+                        </button>
+                      )}
+                    </section>
                   </div>
                 );
               })}

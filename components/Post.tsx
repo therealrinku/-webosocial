@@ -1,6 +1,6 @@
 import { FiThumbsUp, FiTrash } from "react-icons/fi";
 import { BiCommentDetail } from "react-icons/bi";
-import { ref as dbRef, onValue, update } from "firebase/database";
+import { ref as dbRef, onValue, update, remove } from "firebase/database";
 import { db } from "../firebase";
 import { Fragment, useContext, useState } from "react";
 import { RootContext } from "../context/RootContext";
@@ -61,6 +61,20 @@ export default function Post({ post }: Props) {
     }
   }
 
+  function onDeletePost(id: number) {
+    const confirmed = confirm("Are you sure ?");
+
+    if (!confirmed) return;
+
+    try {
+      remove(dbRef(db, "posts/" + id));
+
+      toast.success("Successfully deleted the post");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }
+
   return (
     <Fragment>
       <div className="mb-2 md:border md:border md:rounded-md w-full">
@@ -100,7 +114,15 @@ export default function Post({ post }: Props) {
             <p>{post.comments?.length}</p>
           </button>
         </section>
-        <p className="text-gray-500 text-xs mx-2 my-3">{post.timestamp?.slice(0, post.timestamp?.indexOf("GMT"))}</p>
+
+        <section className="flex items-center text-xs">
+          <p className="text-gray-500 mx-2 my-3">{post.timestamp?.slice(0, post.timestamp?.indexOf("GMT"))}</p>
+          {userData?.email === post.email && (
+            <button onClick={() => onDeletePost(post.id)} className="mb-1 text-red-500 hover:text-red-600">
+              <FiTrash size={14} />
+            </button>
+          )}
+        </section>
       </div>
 
       {showCommentModal && (
