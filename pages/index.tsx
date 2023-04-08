@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
 import { Fragment, useContext } from "react";
 import { ImGoogle } from "react-icons/im";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { RootContext } from "../context/RootContext";
 import { useRouter } from "next/router";
+import { ref, onValue } from "firebase/database";
 
 const Home: NextPage = () => {
   const { setUserData } = useContext(RootContext);
@@ -14,12 +15,23 @@ const Home: NextPage = () => {
     try {
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
-      console.log(res);
-      setUserData({
-        username: res.user.displayName,
-        email: res.user.email,
-        profileImageUrl: res.user.photoURL,
+
+      let customProfileData = { username: "", profileImageUrl: "" };
+
+      const dataRef = ref(db, `/users/${res.user?.email?.slice(0,res.user?.email?.indexOf("@"))}`);
+      onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data,"snapshot")
+        customProfileData.username = data.username;
+        customProfileData.profileImageUrl = data.profileImageUrl;
       });
+
+      setUserData({
+        username: customProfileData.username || res.user.displayName,
+        email: res.user.email,
+        profileImageUrl: customProfileData.profileImageUrl || res.user.photoURL,
+      });
+
       router.push("/app");
     } catch (error: any) {
       alert(error.message);

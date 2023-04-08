@@ -5,7 +5,8 @@ import Feed from "../components/Feed";
 import AddPostModal from "../components/AddPostModal";
 import { db } from "../firebase";
 import { ref, onValue } from "firebase/database";
-import { FiUser } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
+import UpdateProfileModal from "../components/UpdateProfileModal";
 export interface PostModel {
   id: number;
   imageUrl?: string;
@@ -30,7 +31,7 @@ export default function App() {
   if (!userData?.email) typeof window != "undefined" && router.push("/");
 
   const [showAddPostModal, setShowAddPostModal] = useState<boolean>(false);
-
+  const [showUpdateProfileModal, setShowUpdateProfileModal] = useState<boolean>(false);
   const [posts, setPosts] = useState<PostModel[]>([]);
 
   useEffect(() => {
@@ -47,13 +48,15 @@ export default function App() {
         <img className="h-20 w-20" src="https://cms.webo.digital/wp-content/uploads/2021/04/image-1.svg" />
 
         <section className="text-sm text-white flex items-center">
-          <p className="flex items-center gap-2">
-            <FiUser size={18} /> {userData?.username}
-          </p>
+          <button onClick={() => setShowUpdateProfileModal(true)} className="flex items-center gap-2 hover:underline">
+            <img src={userData?.profileImageUrl} alt="profile_image" className="h-6 w-6 rounded-full"/>
+            {userData?.username}
+            <FiEdit size={18} />
+          </button>
           <button onClick={() => setShowAddPostModal(true)} className="mx-5 hover:text-gray-100">
             Create New Post
           </button>
-          <button className="font-bold underline" onClick={() => setUserData({})}>
+          <button className="font-bold" onClick={() => setUserData({})}>
             Logout
           </button>
         </section>
@@ -63,6 +66,7 @@ export default function App() {
       {userData?.email && <Feed posts={posts} />}
 
       {showAddPostModal && <AddPostModal newPostId={posts.length} onClose={() => setShowAddPostModal(false)} />}
+      {showUpdateProfileModal && <UpdateProfileModal onClose={() => setShowUpdateProfileModal(false)} />}
     </Fragment>
   );
 }

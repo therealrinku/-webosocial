@@ -2,7 +2,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { FormEvent, Fragment, useContext, useState } from "react";
 import { FiX } from "react-icons/fi";
 import { db, storage } from "../firebase";
-import { toast } from "react-toast";
+import { toast } from "react-toastify";
 import { RootContext } from "../context/RootContext";
 import { ref as dbRef, set } from "firebase/database";
 
@@ -31,7 +31,7 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
     }
 
     try {
-      const storageRef = ref(storage, `posts/${userData?.username}/${files[0].name.replaceAll("'", "")}`);
+      const storageRef = ref(storage, `posts/${userData?.email}/${files[0].name.replaceAll("'", "")}`);
       const uploadTask = uploadBytesResumable(storageRef, files[0]);
       setUploading(true);
 
@@ -145,7 +145,7 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
           {uploading && <p>Uploading: {progress} %</p>}
 
           <button
-            disabled={uploading || !text.trim()}
+            disabled={uploading || postType ==="text" ? !text.trim() : !fileUrl }
             onSubmit={onPost}
             className="disabled:bg-blue-400 bg-blue-500 text-white py-2 rounded-md w-full mt-20"
           >
