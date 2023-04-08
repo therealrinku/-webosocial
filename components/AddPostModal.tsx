@@ -62,7 +62,7 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
     e.preventDefault();
 
     try {
-      set(dbRef(db, "posts/" + newPostId), {
+      set(dbRef(db, "posts/" + (newPostId || 0)), {
         username: userData?.username,
         profileImageUrl: userData?.profileImageUrl,
         postType,
@@ -70,10 +70,9 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
         text: postType === "text" ? text : null,
         videoUrl: postType === "video" ? fileUrl : null,
         imageUrl: postType === "image" ? fileUrl : null,
-        likesCount: 0,
         comments: [],
         likedBy: [],
-        id: newPostId,
+        id: newPostId || 0,
         timestamp: new Date().toString(),
       });
 

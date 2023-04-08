@@ -1,4 +1,4 @@
-import { FiThumbsUp } from "react-icons/fi";
+import { FiThumbsUp, FiTrash } from "react-icons/fi";
 import { BiCommentDetail } from "react-icons/bi";
 import { ref as dbRef, onValue, update } from "firebase/database";
 import { db } from "../firebase";
@@ -64,9 +64,12 @@ export default function Post({ post }: Props) {
   return (
     <Fragment>
       <div className="mb-2 md:border md:border md:rounded-md w-full">
-        <section className="flex items-center gap-2 mb-1 p-2">
+        <section className="flex items-start gap-2 mb-1 p-2">
           <img src={post.profileImageUrl} className="w-7 h-7 rounded-full" />
-          <p>{post.username}</p>
+          <div>
+            <p className="text-sm">{post.username}</p>
+            <p className="text-xs text-gray-500">{post.email}</p>
+          </div>
         </section>
 
         {post.postType === "text" ? (
@@ -100,7 +103,9 @@ export default function Post({ post }: Props) {
         <p className="text-gray-500 text-xs mx-2 my-3">{post.timestamp?.slice(0, post.timestamp?.indexOf("GMT"))}</p>
       </div>
 
-      {showCommentModal && <AddAndViewCommentModal postId={post.id} comments={post.comments} onClose={() => setShowCommentModal(false)} />}
+      {showCommentModal && (
+        <AddAndViewCommentModal postId={post.id} comments={post.comments} onClose={() => setShowCommentModal(false)} />
+      )}
     </Fragment>
   );
 }

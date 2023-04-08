@@ -50,7 +50,7 @@ export default function App() {
       {!userData?.email && <p>Loading....</p>}
       {userData?.email && <Feed posts={posts} />}
 
-      {showAddPostModal && <AddPostModal newPostId={posts.length} onClose={() => setShowAddPostModal(false)} />}
+      {showAddPostModal && <AddPostModal newPostId={posts?.length} onClose={() => setShowAddPostModal(false)} />}
       {showUpdateProfileModal && <UpdateProfileModal onClose={() => setShowUpdateProfileModal(false)} />}
     </Fragment>
   );
