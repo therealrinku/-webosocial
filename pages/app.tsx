@@ -1,18 +1,68 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { RootContext } from "../context/RootContext";
 import { useRouter } from "next/router";
 import Feed from "../components/Feed";
+import AddPostModal from "../components/AddPostModal";
+import { db } from "../firebase";
+import { ref, onValue } from "firebase/database";
+import { FiUser } from "react-icons/fi";
+export interface PostModel {
+  id: number;
+  imageUrl?: string;
+  postType: string;
+  timestamp: string;
+  text?: string;
+  videoUrl?: string;
+  username: string;
+  profileImageUrl: string;
+  likedBy?: string[];
+  comments?: (null | {
+    username: string;
+    profileImage: string;
+    comment: string;
+  })[];
+}
 
 export default function App() {
-  const { userData } = useContext(RootContext);
   const router = useRouter();
+  const { userData, setUserData } = useContext(RootContext);
 
   if (!userData?.email) typeof window != "undefined" && router.push("/");
 
+  const [showAddPostModal, setShowAddPostModal] = useState<boolean>(false);
+
+  const [posts, setPosts] = useState<PostModel[]>([]);
+
+  useEffect(() => {
+    const dataRef = ref(db, "/posts/");
+    onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      setPosts(data?.reverse());
+    });
+  }, []);
+
   return (
     <Fragment>
+      <nav className="z-100 fixed top-0  left-0  w-full bg-blue-500 w-100 h-10 flex items-center justify-between px-10">
+        <img className="h-20 w-20" src="https://cms.webo.digital/wp-content/uploads/2021/04/image-1.svg" />
+
+        <section className="text-sm text-white flex items-center">
+          <p className="flex items-center gap-2">
+            <FiUser size={18} /> {userData?.username}
+          </p>
+          <button onClick={() => setShowAddPostModal(true)} className="mx-5 hover:text-gray-100">
+            Create New Post
+          </button>
+          <button className="font-bold underline" onClick={() => setUserData({})}>
+            Logout
+          </button>
+        </section>
+      </nav>
+
       {!userData?.email && <p>Loading....</p>}
-      {userData?.email && <Feed />}
+      {userData?.email && <Feed posts={posts} />}
+
+      {showAddPostModal && <AddPostModal newPostId={posts.length} onClose={() => setShowAddPostModal(false)} />}
     </Fragment>
   );
 }
