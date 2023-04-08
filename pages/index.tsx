@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         profileImageUrl: customProfileData.profileImageUrl || res.user.photoURL,
       });
 
-      router.push("/app");
+      router.push("/dashboard");
     } catch (error: any) {
       alert(error.message);
     }
