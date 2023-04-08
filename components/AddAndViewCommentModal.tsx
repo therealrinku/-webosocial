@@ -88,7 +88,9 @@ export default function AddAndViewCommentModal({ onClose, postId, comments }: Pr
                     </section>
 
                     <p className="mx-2 mt-3">{comment.comment}</p>
-                    <p className="mx-2 mt-3 text-gray-500 text-xs">{comment.timestamp}</p>
+                    <p className="mx-2 mt-3 text-gray-500 text-xs">
+                      {comment.timestamp?.slice(0, comment.timestamp?.indexOf("GMT"))}
+                    </p>
                   </div>
                 );
               })}

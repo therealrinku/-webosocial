@@ -96,8 +96,8 @@ export default function Post({ post }: Props) {
             <BiCommentDetail size={20} />
             <p>{post.comments?.length}</p>
           </button>
-          <p className="text-sm">{post.timestamp?.slice(0, post.timestamp?.indexOf("GMT"))}</p>
         </section>
+        <p className="text-gray-500 text-xs mx-2 my-3">{post.timestamp?.slice(0, post.timestamp?.indexOf("GMT"))}</p>
       </div>
 
       {showCommentModal && <AddAndViewCommentModal postId={post.id} comments={post.comments} onClose={() => setShowCommentModal(false)} />}
