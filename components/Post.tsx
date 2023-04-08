@@ -7,6 +7,7 @@ import { RootContext } from "../context/RootContext";
 import { toast } from "react-toastify";
 import { PostModel } from "../types";
 import AddAndViewCommentModal from "./AddAndViewCommentModal";
+import UserProfileModal from "./UserProfileModal";
 
 interface Props {
   post: PostModel;
@@ -16,6 +17,7 @@ export default function Post({ post }: Props) {
   const { userData } = useContext(RootContext);
   const [inProgress, setInProgress] = useState<boolean>(false);
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
+  const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>(false);
 
   function onPostLike(id: number) {
     setInProgress(true);
@@ -78,12 +80,11 @@ export default function Post({ post }: Props) {
   return (
     <Fragment>
       <div className="mb-2 md:border md:border md:rounded-md w-full">
-        <section className="flex items-start gap-2 mb-1 p-2">
+        <section className="flex items-center gap-2 mb-1 p-2">
           <img src={post.profileImageUrl} className="w-7 h-7 rounded-full" />
-          <div>
-            <p className="text-sm">{post.username}</p>
-            <p className="text-xs text-gray-500">{post.email}</p>
-          </div>
+          <button onClick={() => setShowUserInfoModal(true)} className="text-sm hover:underline text-gray-500">
+            {post.email}
+          </button>
         </section>
 
         {post.postType === "text" ? (
@@ -127,6 +128,13 @@ export default function Post({ post }: Props) {
 
       {showCommentModal && (
         <AddAndViewCommentModal postId={post.id} comments={post.comments} onClose={() => setShowCommentModal(false)} />
+      )}
+
+      {showUserInfoModal && (
+        <UserProfileModal
+          userData={{ email: post.email, username: post.username, profileImageUrl: post.profileImageUrl }}
+          onClose={() => setShowUserInfoModal(false)}
+        />
       )}
     </Fragment>
   );

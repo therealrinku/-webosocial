@@ -108,7 +108,7 @@ export default function AddAndViewCommentModal({ onClose, postId, comments }: Pr
                   <div key={comment.id} className="text-sm border-b py-3">
                     <section className="flex items-center gap-2 mb-1 p-2">
                       <img src={comment.profileImageUrl} className="w-7 h-7 rounded-full" />
-                      <p>{comment.username}</p>
+                      <p>{comment.email}</p>
                     </section>
 
                     <p className="mx-2 mt-3">{comment.comment}</p>
