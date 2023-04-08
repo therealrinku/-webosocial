@@ -61,7 +61,7 @@ export default function UpdateProfileModal({ onClose }: Props) {
     e.preventDefault();
 
     try {
-      set(dbRef(db, "users/" + userData?.email?.slice(0, userData?.email?.indexOf("@"))), {
+      set(dbRef(db, "users/" + userData?.email?.replace(/[^\w]/g, "")), {
         username: username,
         profileImageUrl: fileUrl || userData?.profileImageUrl,
       });

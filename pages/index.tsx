@@ -18,12 +18,12 @@ const Home: NextPage = () => {
 
       let customProfileData = { username: "", profileImageUrl: "" };
 
-      const dataRef = ref(db, `/users/${res.user?.email?.slice(0,res.user?.email?.indexOf("@"))}`);
+      const dataRef = ref(db, `/users/${res?.user?.email?.replace(/[^\w]/g, "")}`);
+
       onValue(dataRef, (snapshot) => {
         const data = snapshot.val();
-        console.log(data,"snapshot")
-        customProfileData.username = data.username;
-        customProfileData.profileImageUrl = data.profileImageUrl;
+        customProfileData.username = data?.username;
+        customProfileData.profileImageUrl = data?.profileImageUrl;
       });
 
       setUserData({
