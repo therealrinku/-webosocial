@@ -2,8 +2,8 @@
 
 ## Steps to run locally
 
-- git clone https://github.com/therealrinku/-webosocial.git
-- go to project folder and run yarn install
+- Run `git clone https://github.com/therealrinku/-webosocial.git`
+- go to project folder and run `yarn install`
 - then create .env and add these to your env file
 NEXT_APP_FIREBASE_API_KEY=AIzaSyDZD24a53Bcri-iighC__tEgDlGkAyYggQ
 NEXT_APP_FIREBASE_AUTH_DOMAIN=webosocial-6f11f.firebaseapp.com
@@ -14,4 +14,4 @@ NEXT_APP_FIREBASE_MESSAGING_SENDER_ID=772741913113
 NEXT_APP_FIREBASE_APP_ID=1:772741913113:web:bf957841b4bc91a817a888
 NEXT_APP_FIREBASE_MEASUREMENT_ID=G-KFBE4EY2WN
 
-- then run yarn run dev
+- then run `yarn run dev`
