@@ -21,8 +21,6 @@ export default function Feed({ posts, fullWidth }: Props) {
             return <Post post={post} key={post.id} />;
           })}
       </main>
-
-      {!posts?.length && <p className="text-center text-sm">No any posts found! Try creating a new post.</p>}
     </Fragment>
   );
 }
