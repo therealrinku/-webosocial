@@ -26,8 +26,15 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
       return toast.error("File not found. please try again.");
     }
 
-    if (!["jpg", "jpeg", "png", "ogg", "mp4"].includes(files[0].name.split(".").pop() ?? "")) {
-      return toast.error("Unsupported file format. Only jpeg, jpg, png, ogg and mp4 are supported.");
+    const allowedImageExtensions = ["jpg", "jpeg", "png"];
+    const allowedVideoExtensions = ["ogg", "mp4"];
+
+    if (
+      !(postType === "image" ? allowedImageExtensions : allowedVideoExtensions).includes(
+        files[0].name.split(".").pop() ?? ""
+      )
+    ) {
+      return toast.error(`Unsupported file format. Only ${postType === "image" ? allowedImageExtensions.join(" ,") : allowedVideoExtensions.join(" ,")} are supported.`);
     }
 
     try {
@@ -139,7 +146,13 @@ export default function AddPostModal({ onClose, newPostId }: Props) {
               required
             />
           ) : (
-            <input accept=".jpeg,.jpg,.png,.ogg,.mp4" type="file" className="mt-10" required onChange={onFileUpload} />
+            <input
+              accept={postType === "image" ? ".jpeg,.jpg,.png" : ".ogg,.mp4"}
+              type="file"
+              className="mt-10"
+              required
+              onChange={onFileUpload}
+            />
           )}
 
           {uploading && <p>Uploading: {progress} %</p>}
