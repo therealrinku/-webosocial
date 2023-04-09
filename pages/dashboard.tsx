@@ -23,7 +23,7 @@ export default function App() {
     const dataRef = ref(db, "/posts/");
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      setPosts(data?.reverse());
+      setPosts(data);
     });
   }, []);
 

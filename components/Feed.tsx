@@ -15,9 +15,11 @@ export default function Feed({ posts, fullWidth }: Props) {
           fullWidth ? "w-full" : "lg:w-2/6 md:w-3/6 sm:w-screen md:mx-20 sm:mx-0 mt-20"
         } mt-10 flex flex-col gap-10`}
       >
-        {posts?.map((post) => {
-          return <Post post={post} key={post.id} />;
-        })}
+        {posts
+          ?.sort((a, b) => b.id - a.id)
+          .map((post) => {
+            return <Post post={post} key={post.id} />;
+          })}
       </main>
 
       {!posts?.length && <p className="text-center text-sm">No any posts found! Try creating a new post.</p>}
